@@ -10,7 +10,7 @@ class SplashView extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
-    final duration = kDebugMode ? Duration(milliseconds: 100) : Duration(milliseconds: 1000);
+    const duration = kDebugMode ? Duration(milliseconds: 100) : Duration(milliseconds: 1000);
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: Center(
