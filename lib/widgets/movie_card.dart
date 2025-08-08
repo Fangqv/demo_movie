@@ -18,7 +18,7 @@ class MovieCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 160,
+        width: 145,
         margin: const EdgeInsets.only(right: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,24 +29,21 @@ class MovieCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: AspectRatio(
                 aspectRatio: 2 / 3,
-                child: Hero(
-                  tag: 'movie-poster-${movie.id}',
-                  child: CachedNetworkImage(
-                    imageUrl: movie.posterUrl,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: AppTheme.surfaceColor,
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                child: CachedNetworkImage(
+                  imageUrl: movie.posterUrl,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    color: AppTheme.surfaceColor,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
                     ),
-                    errorWidget: (context, url, error) => Container(
-                      color: AppTheme.surfaceColor,
-                      child: const Icon(
-                        Icons.movie,
-                        color: AppTheme.textSecondaryColor,
-                        size: 50,
-                      ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: AppTheme.surfaceColor,
+                    child: const Icon(
+                      Icons.movie,
+                      color: AppTheme.textSecondaryColor,
+                      size: 50,
                     ),
                   ),
                 ),
@@ -56,22 +53,19 @@ class MovieCard extends StatelessWidget {
 
             // Movie Title with Hero animation
             SizedBox(
-              height: 12, // Fixed height for title area
-              child: Hero(
-                tag: 'movie-title-${movie.id}',
-                child: Material(
-                  color: Colors.transparent,
-                  child: Text(
-                    movie.title,
-                    style: const TextStyle(
-                      color: AppTheme.textColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      height: 1.2, // Adjust line height for better text display
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+              height: 34, // Fixed height for title area
+              child: Material(
+                color: Colors.transparent,
+                child: Text(
+                  movie.title,
+                  style: const TextStyle(
+                    color: AppTheme.textColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    height: 1.2, // Adjust line height for better text display
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),

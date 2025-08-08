@@ -75,16 +75,13 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                     ),
                   ],
                 ),
-                title: Hero(
-                  tag: 'movie-title-${initialMovie.id}',
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Text(
-                      initialMovie.title,
-                      style: const TextStyle(
-                        color: AppTheme.textColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                title: Material(
+                  color: Colors.transparent,
+                  child: Text(
+                    initialMovie.title,
+                    style: const TextStyle(
+                      color: AppTheme.textColor,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -129,19 +126,16 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
           child: SizedBox(
             width: 120,
             height: 180,
-            child: Hero(
-              tag: 'movie-poster-${movie.id}',
-              child: CachedNetworkImage(
-                imageUrl: movie.posterUrl,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Container(
-                  color: AppTheme.surfaceColor,
-                  child: const Center(child: CircularProgressIndicator()),
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: AppTheme.surfaceColor,
-                  child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
-                ),
+            child: CachedNetworkImage(
+              imageUrl: movie.posterUrl,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Container(
+                color: AppTheme.surfaceColor,
+                child: const Center(child: CircularProgressIndicator()),
+              ),
+              errorWidget: (context, url, error) => Container(
+                color: AppTheme.surfaceColor,
+                child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
               ),
             ),
           ),
