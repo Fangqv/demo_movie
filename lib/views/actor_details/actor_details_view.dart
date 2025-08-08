@@ -18,6 +18,7 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.paddingOf(context);
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: Obx(() {
@@ -90,21 +91,30 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
             // Actor Details Content
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Actor Info
-                    _buildActorInfo(actor),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: _buildActorInfo(actor),
+                    ),
                     const SizedBox(height: 24),
 
                     // Biography
-                    if (actor.biography != null && actor.biography!.isNotEmpty) _buildBiography(actor),
-
-                    if (actor.biography != null && actor.biography!.isNotEmpty) const SizedBox(height: 24),
+                    if (actor.biography != null && actor.biography!.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: _buildBiography(actor),
+                      ),
 
                     // Movies
-                    _buildMoviesSection(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: _buildMoviesSection(),
+                    ),
+                    SizedBox(height: padding.bottom),
                   ],
                 ),
               ),
