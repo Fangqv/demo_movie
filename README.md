@@ -17,7 +17,7 @@ A Flutter application that allows users to explore movies and their cast using d
 
 ## Download
 
-[⬇️ Download link: Android APK on pgyer.com](https://www.pgyer.com/movie-android)
+[⬇️ Download link: Android APK on pgyer.com](https://www.pgyer.com/tmdb-movie)
 
 ## Getting Started
 
