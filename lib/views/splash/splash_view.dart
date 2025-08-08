@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movie/controllers/splash_controller.dart';
 import 'package:movie/theme/app_theme.dart';
+import 'package:movie/gen/l10n.dart';
 
 class SplashView extends GetView<SplashController> {
   const SplashView({super.key});
@@ -34,7 +35,7 @@ class SplashView extends GetView<SplashController> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Movie App',
+                          S.of(context).appTitle,
                           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                             color: AppTheme.secondaryColor,
                             fontWeight: FontWeight.bold,

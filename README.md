@@ -15,6 +15,10 @@ A Flutter application that allows users to explore movies and their cast using d
 
 ![Preview](./docs/preview.png)
 
+## Download
+
+[⬇️ Download link: Android APK on pgyer.com](https://www.pgyer.com/movie-android)
+
 ## Getting Started
 
 ### Prerequisites

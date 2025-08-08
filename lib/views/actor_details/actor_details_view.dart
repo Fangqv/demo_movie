@@ -5,6 +5,7 @@ import 'package:movie/controllers/actor_details_controller.dart';
 import 'package:movie/models/actor.dart';
 import 'package:movie/theme/app_theme.dart';
 import 'package:movie/widgets/movie_card.dart';
+import 'package:movie/gen/l10n.dart';
 
 class ActorDetailsView extends GetView<ActorDetailsController> {
   final int actorId;
@@ -28,10 +29,10 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
 
         final actor = controller.actor.value;
         if (actor == null) {
-          return const Center(
+          return Center(
             child: Text(
-              'Actor not found',
-              style: TextStyle(color: AppTheme.textColor),
+              S.of(context).actorNotFound,
+              style: const TextStyle(color: AppTheme.textColor),
             ),
           );
         }
@@ -98,23 +99,24 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Actor Info
+                    // Biography
+                    if (actor.biography?.isNotEmpty == true) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: _buildBiography(context, actor),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
+
+                    // Personal Information
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: _buildActorInfo(actor),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: _buildPersonalInfo(context, actor),
                     ),
                     const SizedBox(height: 24),
 
-                    // Biography
-                    if (actor.biography != null && actor.biography!.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: _buildBiography(actor),
-                      ),
-
-                    // Movies
-                    _buildMoviesSection(),
-                    SizedBox(height: padding.bottom),
+                    // Known For Movies
+                    _buildKnownForSection(context, actor),
                   ],
                 ),
               ),
@@ -125,86 +127,13 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
     );
   }
 
-  Widget _buildActorInfo(Actor actor) {
+  Widget _buildBiography(BuildContext context, Actor actor) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          actor.name,
+          S.of(context).biography,
           style: const TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: AppTheme.textColor,
-          ),
-        ),
-        const SizedBox(height: 8),
-
-        // Birthday
-        if (actor.birthday != null && actor.birthday!.isNotEmpty)
-          Row(
-            children: [
-              const Icon(Icons.cake, color: AppTheme.textSecondaryColor, size: 16),
-              const SizedBox(width: 8),
-              Text(
-                'Born: ${actor.birthday}',
-                style: const TextStyle(
-                  color: AppTheme.textSecondaryColor,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-
-        // Place of Birth
-        if (actor.placeOfBirth != null && actor.placeOfBirth!.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Row(
-              children: [
-                const Icon(Icons.location_on, color: AppTheme.textSecondaryColor, size: 16),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    actor.placeOfBirth!,
-                    style: const TextStyle(
-                      color: AppTheme.textSecondaryColor,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-        // Known For Department
-        if (actor.knownForDepartment != null && actor.knownForDepartment!.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Row(
-              children: [
-                const Icon(Icons.work, color: AppTheme.textSecondaryColor, size: 16),
-                const SizedBox(width: 8),
-                Text(
-                  actor.knownForDepartment!,
-                  style: const TextStyle(
-                    color: AppTheme.textSecondaryColor,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-      ],
-    );
-  }
-
-  Widget _buildBiography(Actor actor) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Biography',
-          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: AppTheme.textColor,
@@ -212,7 +141,7 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
         ),
         const SizedBox(height: 8),
         Text(
-          actor.biography!,
+          actor.biography ?? S.of(context).noBiography,
           style: const TextStyle(
             fontSize: 16,
             color: AppTheme.textColor,
@@ -223,52 +152,81 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
     );
   }
 
-  Widget _buildMoviesSection() {
-    return Obx(() {
-      if (controller.isLoadingMovies.value) {
-        return const Center(child: CircularProgressIndicator());
-      }
+  Widget _buildPersonalInfo(BuildContext context, Actor actor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          S.of(context).personalInfo,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppTheme.textColor,
+          ),
+        ),
+        const SizedBox(height: 12),
+        if (actor.birthday?.isNotEmpty == true) _buildInfoRow(context, S.of(context).birthDate, actor.birthday!),
+        if (actor.placeOfBirth?.isNotEmpty == true) _buildInfoRow(context, S.of(context).placeOfBirth, actor.placeOfBirth!),
+        if (actor.knownForDepartment?.isNotEmpty == true) _buildInfoRow(context, S.of(context).knownFor, actor.knownForDepartment!),
+      ],
+    );
+  }
 
-      final movies = controller.movies;
-
-      return Column(
+  Widget _buildInfoRow(BuildContext context, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 16),
+          SizedBox(
+            width: 100,
             child: Text(
-              'Movies',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+              label,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: AppTheme.textSecondaryColor,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontSize: 14,
                 color: AppTheme.textColor,
               ),
             ),
           ),
-          const SizedBox(height: 12),
-          if (movies.isEmpty)
-            const Text(
-              'No movies found',
-              style: TextStyle(color: AppTheme.textSecondaryColor),
-            )
-          else
-            SizedBox(
-              height: 280,
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                scrollDirection: Axis.horizontal,
-                itemCount: movies.length,
-                itemBuilder: (context, index) {
-                  final movie = movies[index];
-                  return MovieCard(
-                    movie: movie,
-                    onTap: () => controller.onMovieTap(movie),
-                  );
-                },
-              ),
-            ),
         ],
-      );
-    });
+      ),
+    );
+  }
+
+  Widget _buildKnownForSection(BuildContext context, Actor actor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Text(
+            S.of(context).knownFor,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.textColor,
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            S.of(context).noDataAvailable,
+            style: const TextStyle(color: AppTheme.textSecondaryColor),
+          ),
+        ),
+      ],
+    );
   }
 }

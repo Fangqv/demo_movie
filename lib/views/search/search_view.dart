@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie/controllers/search_controller.dart' as search_controller;
 import 'package:movie/models/movie.dart';
 import 'package:movie/theme/app_theme.dart';
+import 'package:movie/gen/l10n.dart';
 
 class SearchView extends GetView<search_controller.SearchController> {
   const SearchView({super.key});
@@ -13,9 +14,9 @@ class SearchView extends GetView<search_controller.SearchController> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: const Text(
-          'Search Movies',
-          style: TextStyle(color: AppTheme.textColor),
+        title: Text(
+          S.of(context).searchMovies,
+          style: const TextStyle(color: AppTheme.textColor),
         ),
         backgroundColor: AppTheme.primaryColor,
         leading: IconButton(
@@ -31,7 +32,7 @@ class SearchView extends GetView<search_controller.SearchController> {
             child: TextField(
               onChanged: controller.onSearchChanged,
               decoration: InputDecoration(
-                hintText: 'Search for movies...',
+                hintText: S.of(context).searchForMoviesHint,
                 hintStyle: const TextStyle(color: AppTheme.textSecondaryColor),
                 prefixIcon: const Icon(Icons.search, color: AppTheme.textSecondaryColor),
                 suffixIcon: Obx(() {
@@ -63,19 +64,19 @@ class SearchView extends GetView<search_controller.SearchController> {
               }
 
               if (controller.searchQuery.value.isEmpty) {
-                return const Center(
+                return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.search,
                         size: 64,
                         color: AppTheme.textSecondaryColor,
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Text(
-                        'Search for movies',
-                        style: TextStyle(
+                        S.of(context).searchForMovies,
+                        style: const TextStyle(
                           fontSize: 18,
                           color: AppTheme.textSecondaryColor,
                         ),
@@ -86,19 +87,19 @@ class SearchView extends GetView<search_controller.SearchController> {
               }
 
               if (controller.searchResults.isEmpty) {
-                return const Center(
+                return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.movie,
                         size: 64,
                         color: AppTheme.textSecondaryColor,
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Text(
-                        'No movies found',
-                        style: TextStyle(
+                        S.of(context).noMoviesFound,
+                        style: const TextStyle(
                           fontSize: 18,
                           color: AppTheme.textSecondaryColor,
                         ),
@@ -109,13 +110,13 @@ class SearchView extends GetView<search_controller.SearchController> {
               }
 
               return ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 itemCount: controller.searchResults.length,
                 itemBuilder: (context, index) {
                   final movie = controller.searchResults[index];
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: _buildSearchResultCard(movie),
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: _buildSearchResultCard(context, movie),
                   );
                 },
               );
@@ -126,7 +127,7 @@ class SearchView extends GetView<search_controller.SearchController> {
     );
   }
 
-  Widget _buildSearchResultCard(Movie movie) {
+  Widget _buildSearchResultCard(BuildContext context, Movie movie) {
     return GestureDetector(
       onTap: () => controller.onMovieTap(movie),
       child: Container(
@@ -134,39 +135,40 @@ class SearchView extends GetView<search_controller.SearchController> {
           color: AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Row(
-          children: [
-            // Movie Poster with Hero animation
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                bottomLeft: Radius.circular(12),
-              ),
-              child: SizedBox(
-                width: 80,
-                height: 120,
-                child: Hero(
-                  tag: 'movie_poster_${movie.id}',
-                  child: CachedNetworkImage(
-                    imageUrl: movie.posterUrl,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: AppTheme.backgroundColor,
-                      child: const Center(child: CircularProgressIndicator()),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            children: [
+              // Movie Poster
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: CachedNetworkImage(
+                  imageUrl: movie.posterUrl,
+                  width: 60,
+                  height: 90,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    width: 60,
+                    height: 90,
+                    color: AppTheme.backgroundColor,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
                     ),
-                    errorWidget: (context, url, error) => Container(
-                      color: AppTheme.backgroundColor,
-                      child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    width: 60,
+                    height: 90,
+                    color: AppTheme.backgroundColor,
+                    child: const Icon(
+                      Icons.movie,
+                      color: AppTheme.textSecondaryColor,
                     ),
                   ),
                 ),
               ),
-            ),
-
-            // Movie Info
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
+              const SizedBox(width: 12),
+              // Movie Info
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -181,56 +183,37 @@ class SearchView extends GetView<search_controller.SearchController> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
-
-                    // Release Year and Rating
+                    if (movie.releaseDate?.isNotEmpty == true)
+                      Text(
+                        movie.releaseDate!,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: AppTheme.textSecondaryColor,
+                        ),
+                      ),
+                    const SizedBox(height: 4),
                     Row(
                       children: [
-                        if (movie.releaseYear.isNotEmpty)
-                          Text(
-                            movie.releaseYear,
-                            style: const TextStyle(
-                              color: AppTheme.textSecondaryColor,
-                              fontSize: 14,
-                            ),
+                        const Icon(
+                          Icons.star,
+                          size: 16,
+                          color: Colors.amber,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          movie.voteAverage.toStringAsFixed(1),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: AppTheme.textSecondaryColor,
                           ),
-                        if (movie.releaseYear.isNotEmpty && movie.voteAverage > 0)
-                          const Text(
-                            ' • ',
-                            style: TextStyle(color: AppTheme.textSecondaryColor),
-                          ),
-                        if (movie.voteAverage > 0)
-                          Row(
-                            children: [
-                              const Icon(Icons.star, color: Colors.amber, size: 14),
-                              const SizedBox(width: 2),
-                              Text(
-                                movie.voteAverage.toStringAsFixed(1),
-                                style: const TextStyle(
-                                  color: AppTheme.textSecondaryColor,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
+                        ),
                       ],
-                    ),
-                    const SizedBox(height: 8),
-
-                    // Overview
-                    Text(
-                      movie.overview,
-                      style: const TextStyle(
-                        color: AppTheme.textSecondaryColor,
-                        fontSize: 12,
-                      ),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

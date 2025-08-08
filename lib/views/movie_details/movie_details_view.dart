@@ -6,6 +6,7 @@ import 'package:movie/models/movie_details.dart';
 import 'package:movie/models/movie.dart';
 import 'package:movie/theme/app_theme.dart';
 import 'package:movie/widgets/actor_card.dart';
+import 'package:movie/gen/l10n.dart';
 
 class MovieDetailsView extends GetView<MovieDetailsController> {
   final Movie movie;
@@ -32,10 +33,10 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
 
         // Use initial movie data if detailed data is not available
         if (initialMovie == null) {
-          return const Center(
+          return Center(
             child: Text(
-              'Movie not found',
-              style: TextStyle(color: AppTheme.textColor),
+              S.of(context).movieNotFound,
+              style: const TextStyle(color: AppTheme.textColor),
             ),
           );
         }
@@ -106,7 +107,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                   // Movie Info
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: _buildMovieInfo(initialMovie, movieDetails),
+                    child: _buildMovieInfo(context, initialMovie, movieDetails),
                   ),
                   const SizedBox(height: 24),
 
@@ -114,13 +115,13 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                   if (movieDetails != null) ...[
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: _buildOverview(movieDetails),
+                      child: _buildOverview(context, movieDetails),
                     ),
                     const SizedBox(height: 24),
                   ],
 
                   // Cast
-                  if (movieDetails != null) _buildCastSection(movieDetails),
+                  if (movieDetails != null) _buildCastSection(context, movieDetails),
                 ],
               ),
             ),
@@ -130,7 +131,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
     );
   }
 
-  Widget _buildMovieInfo(Movie movie, MovieDetails? movieDetails) {
+  Widget _buildMovieInfo(BuildContext context, Movie movie, MovieDetails? movieDetails) {
     return Row(
       children: [
         // Poster with Hero animation
@@ -191,7 +192,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                     ),
                   if (movieDetails?.runtime != null)
                     Text(
-                      '${movieDetails!.runtime} min',
+                      '${movieDetails!.runtime} ${S.of(context).minutes}',
                       style: const TextStyle(
                         color: AppTheme.textSecondaryColor,
                         fontSize: 16,
@@ -216,7 +217,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                   ),
                   if (movieDetails?.voteCount != null)
                     Text(
-                      ' (${movieDetails!.voteCount} votes)',
+                      ' (${movieDetails!.voteCount} ${S.of(context).voteCount})',
                       style: const TextStyle(
                         color: AppTheme.textSecondaryColor,
                         fontSize: 14,
@@ -247,13 +248,13 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
     );
   }
 
-  Widget _buildOverview(MovieDetails movie) {
+  Widget _buildOverview(BuildContext context, MovieDetails movie) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Overview',
-          style: TextStyle(
+        Text(
+          S.of(context).overview,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: AppTheme.textColor,
@@ -272,18 +273,18 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
     );
   }
 
-  Widget _buildCastSection(MovieDetails movie) {
+  Widget _buildCastSection(BuildContext context, MovieDetails movie) {
     final cast = movie.cast.take(10).toList();
     final controller = Get.find<MovieDetailsController>(tag: "movie_details_controller:${movie.id}");
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 16),
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
           child: Text(
-            'Cast',
-            style: TextStyle(
+            S.of(context).cast,
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: AppTheme.textColor,
@@ -292,9 +293,9 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
         ),
         const SizedBox(height: 12),
         if (cast.isEmpty)
-          const Text(
-            'No cast information available',
-            style: TextStyle(color: AppTheme.textSecondaryColor),
+          Text(
+            S.of(context).noDataAvailable,
+            style: const TextStyle(color: AppTheme.textSecondaryColor),
           )
         else
           SizedBox(

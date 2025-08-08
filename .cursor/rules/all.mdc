@@ -14,7 +14,7 @@ alwaysApply: true
 - Must use English to communicate with the user.
 - Do not use `MediaQuery.of(context).size.width` to get the screen width.
 - Do not chain `.then` for async results; use `async` / `await` instead.
-- Apart from the component's own `build` method, do not create any `Widget _buildXXXX()` methods.
+- Do not create any `Widget _buildXXXX()` methods. Always create new Widgets and use them in the `build` method when possible.
 - Prefer `for` loops over `forEach`.
 - Use `MediaQuery.sizeOf(context).width` to get the screen width.
 - All click handler methods should start with `_on`, be declared outside the `build` method at the same scope, marked as `async`, and return any type as needed.

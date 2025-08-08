@@ -5,6 +5,7 @@ import 'package:movie/models/movie.dart';
 import 'package:movie/theme/app_theme.dart';
 import 'package:movie/widgets/movie_card.dart';
 import 'package:movie/widgets/loading_shimmer.dart';
+import 'package:movie/gen/l10n.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -14,9 +15,9 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: const Text(
-          'Movie App',
-          style: TextStyle(color: AppTheme.textColor),
+        title: Text(
+          S.of(context).appTitle,
+          style: const TextStyle(color: AppTheme.textColor),
         ),
         backgroundColor: AppTheme.primaryColor,
         actions: [
@@ -43,20 +44,20 @@ class HomeView extends GetView<HomeController> {
                   // Trending Movies Section
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: _buildSectionHeader('Trending Movies'),
+                    child: _buildSectionHeader(S.of(context).trendingMovies),
                   ),
                   const SizedBox(height: 12),
-                  _buildMoviesList(controller.trendingMovies, controller.isLoadingTrending),
+                  _buildMoviesList(context, controller.trendingMovies, controller.isLoadingTrending),
 
                   const SizedBox(height: 32),
 
                   // Popular Movies Section
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: _buildSectionHeader('Popular Movies'),
+                    child: _buildSectionHeader(S.of(context).popularMovies),
                   ),
                   const SizedBox(height: 12),
-                  _buildMoviesList(controller.popularMovies, controller.isLoadingPopular),
+                  _buildMoviesList(context, controller.popularMovies, controller.isLoadingPopular),
                 ],
               ),
             ),
@@ -77,7 +78,7 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  Widget _buildMoviesList(RxList<Movie> movies, RxBool isLoading) {
+  Widget _buildMoviesList(BuildContext context, RxList<Movie> movies, RxBool isLoading) {
     if (isLoading.value) {
       return SizedBox(
         height: 280,
@@ -91,12 +92,12 @@ class HomeView extends GetView<HomeController> {
     }
 
     if (movies.isEmpty) {
-      return const SizedBox(
+      return SizedBox(
         height: 200,
         child: Center(
           child: Text(
-            'No movies found',
-            style: TextStyle(color: AppTheme.textSecondaryColor),
+            S.of(context).noMoviesFound,
+            style: const TextStyle(color: AppTheme.textSecondaryColor),
           ),
         ),
       );
@@ -110,9 +111,9 @@ class HomeView extends GetView<HomeController> {
         itemCount: movies.length,
         itemBuilder: (context, index) {
           final movie = movies[index];
-          return MovieCard(
-            movie: movie,
-            onTap: () => controller.onMovieTap(movie),
+          return Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: MovieCard(movie: movie),
           );
         },
       ),

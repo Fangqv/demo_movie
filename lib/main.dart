@@ -6,6 +6,8 @@ import 'package:movie/routes/app_pages.dart';
 import 'package:movie/routes/app_routes.dart';
 import 'package:movie/theme/app_theme.dart';
 import 'package:halo/halo.dart';
+import 'package:movie/gen/l10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +34,13 @@ class MovieApp extends StatelessWidget {
       initialRoute: AppRoutes.splash,
       getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
     );
   }
 }
