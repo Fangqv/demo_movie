@@ -136,7 +136,7 @@ class SearchView extends GetView<search_controller.SearchController> {
         ),
         child: Row(
           children: [
-            // Movie Poster
+            // Movie Poster with Hero animation
             ClipRRect(
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(12),
@@ -145,16 +145,19 @@ class SearchView extends GetView<search_controller.SearchController> {
               child: SizedBox(
                 width: 80,
                 height: 120,
-                child: CachedNetworkImage(
-                  imageUrl: movie.posterUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    color: AppTheme.backgroundColor,
-                    child: const Center(child: CircularProgressIndicator()),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    color: AppTheme.backgroundColor,
-                    child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
+                child: Hero(
+                  tag: 'movie_poster_${movie.id}',
+                  child: CachedNetworkImage(
+                    imageUrl: movie.posterUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: AppTheme.backgroundColor,
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      color: AppTheme.backgroundColor,
+                      child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
+                    ),
                   ),
                 ),
               ),

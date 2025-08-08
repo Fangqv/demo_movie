@@ -47,18 +47,21 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
                 background: Stack(
                   fit: StackFit.expand,
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: actor.fullProfileUrl,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        color: AppTheme.surfaceColor,
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: AppTheme.surfaceColor,
-                        child: const Icon(
-                          Icons.person,
-                          color: AppTheme.textSecondaryColor,
-                          size: 100,
+                    Hero(
+                      tag: 'actor_profile_${actor.id}',
+                      child: CachedNetworkImage(
+                        imageUrl: actor.fullProfileUrl,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          color: AppTheme.surfaceColor,
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          color: AppTheme.surfaceColor,
+                          child: const Icon(
+                            Icons.person,
+                            color: AppTheme.textSecondaryColor,
+                            size: 100,
+                          ),
                         ),
                       ),
                     ),

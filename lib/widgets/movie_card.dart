@@ -29,21 +29,24 @@ class MovieCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: AspectRatio(
                 aspectRatio: 2 / 3,
-                child: CachedNetworkImage(
-                  imageUrl: movie.posterUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    color: AppTheme.surfaceColor,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                child: Hero(
+                  tag: 'movie_poster_${movie.id}',
+                  child: CachedNetworkImage(
+                    imageUrl: movie.posterUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: AppTheme.surfaceColor,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    color: AppTheme.surfaceColor,
-                    child: const Icon(
-                      Icons.movie,
-                      color: AppTheme.textSecondaryColor,
-                      size: 50,
+                    errorWidget: (context, url, error) => Container(
+                      color: AppTheme.surfaceColor,
+                      child: const Icon(
+                        Icons.movie,
+                        color: AppTheme.textSecondaryColor,
+                        size: 50,
+                      ),
                     ),
                   ),
                 ),

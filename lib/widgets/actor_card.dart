@@ -22,27 +22,30 @@ class ActorCard extends StatelessWidget {
         margin: const EdgeInsets.only(right: 16),
         child: Column(
           children: [
-            // Actor Photo
+            // Actor Photo with Hero animation
             ClipRRect(
               borderRadius: BorderRadius.circular(60),
               child: SizedBox(
                 width: 120,
                 height: 120,
-                child: CachedNetworkImage(
-                  imageUrl: actor.profileUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    color: AppTheme.surfaceColor,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                child: Hero(
+                  tag: 'actor_profile_${actor.id}',
+                  child: CachedNetworkImage(
+                    imageUrl: actor.profileUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: AppTheme.surfaceColor,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    color: AppTheme.surfaceColor,
-                    child: const Icon(
-                      Icons.person,
-                      color: AppTheme.textSecondaryColor,
-                      size: 50,
+                    errorWidget: (context, url, error) => Container(
+                      color: AppTheme.surfaceColor,
+                      child: const Icon(
+                        Icons.person,
+                        color: AppTheme.textSecondaryColor,
+                        size: 50,
+                      ),
                     ),
                   ),
                 ),

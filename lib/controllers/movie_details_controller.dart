@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:movie/models/movie.dart';
 import 'package:movie/models/movie_details.dart';
 import 'package:movie/services/api_service.dart';
+import 'package:movie/views/actor_details/actor_details_view.dart';
+import 'package:movie/controllers/actor_details_controller.dart';
 
 class MovieDetailsController extends GetxController {
   static const tagHeader = "movie_details_controller";
@@ -37,7 +39,12 @@ class MovieDetailsController extends GetxController {
 
   void onActorTap(int actorId) async {
     final currentMovie = initialMovie.value;
-    await Get.toNamed('/actor-details', arguments: actorId);
+    await Get.to(
+      () => ActorDetailsView(actorId: actorId),
+      binding: ActorDetailsBinding(),
+      transition: Transition.fadeIn,
+      duration: const Duration(milliseconds: 300),
+    );
     if (currentMovie != null) {
       loadMovieDetails(currentMovie);
     }

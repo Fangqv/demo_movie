@@ -51,18 +51,21 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                 background: Stack(
                   fit: StackFit.expand,
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: movieDetails?.backdropUrl ?? initialMovie.posterUrl,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        color: AppTheme.surfaceColor,
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: AppTheme.surfaceColor,
-                        child: const Icon(
-                          Icons.movie,
-                          color: AppTheme.textSecondaryColor,
-                          size: 100,
+                    Hero(
+                      tag: 'movie_backdrop_${initialMovie.id}',
+                      child: CachedNetworkImage(
+                        imageUrl: movieDetails?.backdropUrl ?? initialMovie.posterUrl,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          color: AppTheme.surfaceColor,
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          color: AppTheme.surfaceColor,
+                          child: const Icon(
+                            Icons.movie,
+                            color: AppTheme.textSecondaryColor,
+                            size: 100,
+                          ),
                         ),
                       ),
                     ),
@@ -136,16 +139,19 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
           child: SizedBox(
             width: 120,
             height: 180,
-            child: CachedNetworkImage(
-              imageUrl: movie.posterUrl,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                color: AppTheme.surfaceColor,
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-              errorWidget: (context, url, error) => Container(
-                color: AppTheme.surfaceColor,
-                child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
+            child: Hero(
+              tag: 'movie_poster_${movie.id}',
+              child: CachedNetworkImage(
+                imageUrl: movie.posterUrl,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Container(
+                  color: AppTheme.surfaceColor,
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: AppTheme.surfaceColor,
+                  child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
+                ),
               ),
             ),
           ),
