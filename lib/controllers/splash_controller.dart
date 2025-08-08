@@ -24,7 +24,6 @@ class SplashController extends GetxController {
 class SplashBinding extends Bindings {
   @override
   void dependencies() {
-    // qr;
-    Get.lazyPut<SplashController>(() => SplashController());
+    Get.put<SplashController>(SplashController());
   }
 }
