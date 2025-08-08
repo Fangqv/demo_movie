@@ -4,8 +4,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie/controllers/actor_details_controller.dart';
 import 'package:movie/models/actor.dart';
 import 'package:movie/theme/app_theme.dart';
-import 'package:movie/widgets/movie_card.dart';
 import 'package:movie/gen/l10n.dart';
+import 'package:movie/utils/hero_tag_utils.dart';
+import 'package:movie/widgets/movie_card.dart';
+import 'package:movie/widgets/loading_shimmer.dart';
 
 class ActorDetailsView extends GetView<ActorDetailsController> {
   final int actorId;
@@ -19,7 +21,6 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.paddingOf(context);
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: Obx(() {
@@ -49,7 +50,7 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
                   fit: StackFit.expand,
                   children: [
                     Hero(
-                      tag: 'actor_profile_${actor.id}',
+                      tag: HeroTagUtils.generateActorProfileTag(actor.id),
                       child: CachedNetworkImage(
                         imageUrl: actor.fullProfileUrl,
                         fit: BoxFit.cover,
@@ -219,13 +220,49 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
           ),
         ),
         const SizedBox(height: 12),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            S.of(context).noDataAvailable,
-            style: const TextStyle(color: AppTheme.textSecondaryColor),
-          ),
-        ),
+        Obx(() {
+          if (controller.isLoadingMovies.value) {
+            return SizedBox(
+              height: 280,
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                scrollDirection: Axis.horizontal,
+                itemCount: 5,
+                itemBuilder: (context, index) => const MovieCardShimmer(),
+              ),
+            );
+          }
+
+          if (controller.movies.isEmpty) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                S.of(context).noDataAvailable,
+                style: const TextStyle(color: AppTheme.textSecondaryColor),
+              ),
+            );
+          }
+
+          return SizedBox(
+            height: 280,
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              scrollDirection: Axis.horizontal,
+              itemCount: controller.movies.length,
+              itemBuilder: (context, index) {
+                final movie = controller.movies[index];
+                return Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: MovieCard(
+                    movie: movie,
+                    heroTagSuffix: 'known_for_$index',
+                    onTap: () => controller.onMovieTap(movie),
+                  ),
+                );
+              },
+            ),
+          );
+        }),
       ],
     );
   }

@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie/models/movie.dart';
 import 'package:movie/theme/app_theme.dart';
+import 'package:movie/utils/hero_tag_utils.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
   final VoidCallback? onTap;
+  final String? heroTagSuffix;
 
   const MovieCard({
     super.key,
     required this.movie,
     this.onTap,
+    this.heroTagSuffix,
   });
 
   @override
   Widget build(BuildContext context) {
+    final heroTag = HeroTagUtils.generateMoviePosterTag(movie.id, heroTagSuffix);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -30,7 +35,7 @@ class MovieCard extends StatelessWidget {
               child: AspectRatio(
                 aspectRatio: 2 / 3,
                 child: Hero(
-                  tag: 'movie_poster_${movie.id}',
+                  tag: heroTag,
                   child: CachedNetworkImage(
                     imageUrl: movie.posterUrl,
                     fit: BoxFit.cover,

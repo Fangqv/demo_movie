@@ -7,6 +7,7 @@ import 'package:movie/models/movie.dart';
 import 'package:movie/theme/app_theme.dart';
 import 'package:movie/widgets/actor_card.dart';
 import 'package:movie/gen/l10n.dart';
+import 'package:movie/utils/hero_tag_utils.dart';
 
 class MovieDetailsView extends GetView<MovieDetailsController> {
   final Movie movie;
@@ -53,7 +54,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                   fit: StackFit.expand,
                   children: [
                     Hero(
-                      tag: 'movie_backdrop_${initialMovie.id}',
+                      tag: HeroTagUtils.generateMovieBackdropTag(initialMovie.id),
                       child: CachedNetworkImage(
                         imageUrl: movieDetails?.backdropUrl ?? initialMovie.posterUrl,
                         fit: BoxFit.cover,
@@ -141,7 +142,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
             width: 120,
             height: 180,
             child: Hero(
-              tag: 'movie_poster_${movie.id}',
+              tag: HeroTagUtils.generateMoviePosterTag(movie.id),
               child: CachedNetworkImage(
                 imageUrl: movie.posterUrl,
                 fit: BoxFit.cover,
@@ -308,6 +309,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                 final actor = cast[index];
                 return ActorCard(
                   actor: actor,
+                  heroTagSuffix: 'cast_$index',
                   onTap: () => controller.onActorTap(actor.id),
                 );
               },
