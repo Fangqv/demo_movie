@@ -36,19 +36,25 @@ class HomeView extends GetView<HomeController> {
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Trending Movies Section
-                  _buildSectionHeader('Trending Movies'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: _buildSectionHeader('Trending Movies'),
+                  ),
                   const SizedBox(height: 12),
                   _buildMoviesList(controller.trendingMovies, controller.isLoadingTrending),
 
                   const SizedBox(height: 32),
 
                   // Popular Movies Section
-                  _buildSectionHeader('Popular Movies'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: _buildSectionHeader('Popular Movies'),
+                  ),
                   const SizedBox(height: 12),
                   _buildMoviesList(controller.popularMovies, controller.isLoadingPopular),
                 ],
@@ -98,6 +104,7 @@ class HomeView extends GetView<HomeController> {
     return SizedBox(
       height: 280,
       child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         scrollDirection: Axis.horizontal,
         itemCount: movies.length,
         itemBuilder: (context, index) {

@@ -22,6 +22,7 @@ class MovieCard extends StatelessWidget {
         margin: const EdgeInsets.only(right: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             // Movie Poster
             ClipRRect(
@@ -51,53 +52,66 @@ class MovieCard extends StatelessWidget {
             const SizedBox(height: 8),
 
             // Movie Title
-            Text(
-              movie.title,
-              style: const TextStyle(
-                color: AppTheme.textColor,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
+            Flexible(
+              child: Text(
+                movie.title,
+                style: const TextStyle(
+                  color: AppTheme.textColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
 
             // Release Year and Rating
-            Row(
-              children: [
-                if (movie.releaseYear.isNotEmpty)
-                  Text(
-                    movie.releaseYear,
-                    style: const TextStyle(
-                      color: AppTheme.textSecondaryColor,
-                      fontSize: 12,
-                    ),
-                  ),
-                if (movie.releaseYear.isNotEmpty && movie.voteAverage > 0)
-                  const Text(
-                    ' • ',
-                    style: TextStyle(color: AppTheme.textSecondaryColor),
-                  ),
-                if (movie.voteAverage > 0)
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size: 12,
-                      ),
-                      const SizedBox(width: 2),
-                      Text(
-                        movie.voteAverage.toStringAsFixed(1),
+            Flexible(
+              child: Row(
+                children: [
+                  if (movie.releaseYear.isNotEmpty)
+                    Flexible(
+                      child: Text(
+                        movie.releaseYear,
                         style: const TextStyle(
                           color: AppTheme.textSecondaryColor,
                           fontSize: 12,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ],
-                  ),
-              ],
+                    ),
+                  if (movie.releaseYear.isNotEmpty && movie.voteAverage > 0)
+                    const Text(
+                      ' • ',
+                      style: TextStyle(color: AppTheme.textSecondaryColor),
+                    ),
+                  if (movie.voteAverage > 0)
+                    Flexible(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 12,
+                          ),
+                          const SizedBox(width: 2),
+                          Flexible(
+                            child: Text(
+                              movie.voteAverage.toStringAsFixed(1),
+                              style: const TextStyle(
+                                color: AppTheme.textSecondaryColor,
+                                fontSize: 12,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
             ),
           ],
         ),
