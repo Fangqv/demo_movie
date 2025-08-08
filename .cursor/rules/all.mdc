@@ -1,0 +1,44 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Introduction
+
+- This is a flutter project.
+- Always use English for the code and comments.
+
+# Rules
+
+- Do not use `MediaQuery.of(context).size.width` to get the screen width.
+- Do not chain `.then` for async results; use `async` / `await` instead.
+- Apart from the component's own `build` method, do not create any `Widget _buildXXXX()` methods.
+- Prefer `for` loops over `forEach`.
+- Use `MediaQuery.sizeOf(context).width` to get the screen width.
+- All click handler methods should start with `_on`, be declared outside the `build` method at the same scope, marked as `async`, and return any type as needed.
+- In the `build` method, any variables/constants that are reused should be extracted to the top of the method and declared with `final fooBar = ...`.
+
+## GetX Usage Enforcement
+
+- Throughout the project, use the `get` package (`GetX`) as the primary solution for state management, dependency injection, and routing.
+- Avoid using alternative state management or routing solutions unless explicitly justified.
+- Use `Get.put()`, `Get.find()`, and `GetBuilder` or `Obx` for state management patterns.
+- Use `Get.to()`, `Get.off()`, and other `Get` navigation methods for routing and navigation.
+- All new code should leverage `Get` APIs for dependency injection and route management to maintain consistency.
+
+## One-line Return Style
+
+**Do not:**
+
+```dart
+if (fooBar) {
+  return;
+}
+```
+
+**Do:**
+
+```dart
+if (fooBar) return;
+```

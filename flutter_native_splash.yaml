@@ -1,0 +1,19 @@
+flutter_native_splash:
+  color: '#FFFFFF' # 浅色模式下的背景颜色
+  color_dark: '#000000' # 深色模式下的背景颜色
+
+  branding_bottom_padding: 32
+
+  image: assets/icon/icon.png
+  image_dark: assets/icon/icon.png
+
+  android_12:
+    color: '#FFFFFF' # 浅色模式下的背景颜色
+    color_dark: '#000000' # 深色模式下的背景颜色
+
+    image: assets/icon/icon.png
+    image_dark: assets/icon/icon.png
+
+  android: true
+  ios: true
+  web: false
