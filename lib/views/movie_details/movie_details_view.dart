@@ -97,25 +97,28 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
 
             // Movie Details Content
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Movie Info
-                    _buildMovieInfo(initialMovie, movieDetails),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Movie Info
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: _buildMovieInfo(initialMovie, movieDetails),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Overview
+                  if (movieDetails != null) ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: _buildOverview(movieDetails),
+                    ),
                     const SizedBox(height: 24),
-
-                    // Overview
-                    if (movieDetails != null) ...[
-                      _buildOverview(movieDetails),
-                      const SizedBox(height: 24),
-                    ],
-
-                    // Cast
-                    if (movieDetails != null) _buildCastSection(movieDetails),
                   ],
-                ),
+
+                  // Cast
+                  if (movieDetails != null) _buildCastSection(movieDetails),
+                ],
               ),
             ),
           ],
@@ -270,12 +273,15 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Cast',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppTheme.textColor,
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: const Text(
+            'Cast',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.textColor,
+            ),
           ),
         ),
         const SizedBox(height: 12),
@@ -288,6 +294,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
           SizedBox(
             height: 200,
             child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               scrollDirection: Axis.horizontal,
               itemCount: cast.length,
               itemBuilder: (context, index) {

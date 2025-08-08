@@ -110,10 +110,7 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
                       ),
 
                     // Movies
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: _buildMoviesSection(),
-                    ),
+                    _buildMoviesSection(),
                     SizedBox(height: padding.bottom),
                   ],
                 ),
@@ -234,12 +231,15 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Movies',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.textColor,
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: const Text(
+              'Movies',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.textColor,
+              ),
             ),
           ),
           const SizedBox(height: 12),
@@ -252,6 +252,7 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
             SizedBox(
               height: 280,
               child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 scrollDirection: Axis.horizontal,
                 itemCount: movies.length,
                 itemBuilder: (context, index) {

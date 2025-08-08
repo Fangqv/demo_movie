@@ -82,6 +82,7 @@ class HomeView extends GetView<HomeController> {
       return SizedBox(
         height: 280,
         child: ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           scrollDirection: Axis.horizontal,
           itemCount: 5,
           itemBuilder: (context, index) => const MovieCardShimmer(),
