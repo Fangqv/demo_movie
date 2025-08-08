@@ -26,7 +26,7 @@ class SplashView extends GetView<SplashController> {
                     opacity: value,
                     child: Column(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.movie,
                           size: 80,
                           color: AppTheme.secondaryColor,
@@ -53,7 +53,7 @@ class SplashView extends GetView<SplashController> {
               builder: (context, value, child) {
                 return Opacity(
                   opacity: value,
-                  child: CircularProgressIndicator(
+                  child: const CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(AppTheme.secondaryColor),
                   ),
                 );

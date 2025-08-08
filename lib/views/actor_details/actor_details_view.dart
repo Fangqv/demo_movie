@@ -234,9 +234,9 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: const Text(
+          const Padding(
+            padding: EdgeInsets.only(left: 16),
+            child: Text(
               'Movies',
               style: TextStyle(
                 fontSize: 20,
