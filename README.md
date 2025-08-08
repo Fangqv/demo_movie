@@ -13,7 +13,7 @@ A Flutter application that allows users to explore movies and their cast using d
 
 ## Screenshots
 
-[Add screenshots here when available]
+![Preview](./docs/preview.png)
 
 ## Getting Started
 
