@@ -128,7 +128,7 @@ The app uses GetX for:
 
 - **State Management**: Reactive state management with `Obx` and `GetBuilder`
 - **Dependency Injection**: Automatic dependency injection with `Get.put()` and `Get.find()`
-- **Routing**: Navigation with `Get.to()`, `Get.off()`, etc.
+- **Routing**: Navigation with `Get.toNamed`, `Get.off()`, etc.
 
 ## Contributing
 

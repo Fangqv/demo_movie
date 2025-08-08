@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:movie/routes/app_pages.dart';
 import 'package:movie/routes/app_routes.dart';
@@ -6,9 +7,11 @@ import 'package:movie/theme/app_theme.dart';
 import 'package:halo/halo.dart';
 
 void main() {
-  final _ = WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   HF.init();
   runApp(const MovieApp());
+  FlutterNativeSplash.remove();
 }
 
 class MovieApp extends StatelessWidget {

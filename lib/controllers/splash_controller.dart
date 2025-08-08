@@ -1,16 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:halo/halo.dart';
 import 'package:movie/routes/app_routes.dart';
 
 class SplashController extends GetxController {
   @override
   void onInit() {
-    // qr;
     super.onInit();
-    // debugger();
     _navigateToHome();
   }
 
@@ -20,8 +15,6 @@ class SplashController extends GetxController {
     } else {
       await Future.delayed(const Duration(milliseconds: 500));
     }
-    // qr;
-    // debugger();
     Get.offAllNamed(AppRoutes.home);
   }
 }

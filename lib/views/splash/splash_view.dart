@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:halo/halo.dart';
 import 'package:movie/controllers/splash_controller.dart';
 import 'package:movie/theme/app_theme.dart';
 

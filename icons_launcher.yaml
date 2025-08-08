@@ -6,6 +6,6 @@ icons_launcher:
     ios:
       enable: true
     macos:
-      enable: true
+      enable: false
     windows:
       enable: false

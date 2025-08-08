@@ -1,8 +1,7 @@
 import 'package:get/get.dart';
 import 'package:movie/models/movie.dart';
+import 'package:movie/routes/app_routes.dart';
 import 'package:movie/services/api_service.dart';
-import 'package:movie/views/movie_details/movie_details_view.dart';
-import 'package:movie/controllers/movie_details_controller.dart';
 
 class SearchController extends GetxController {
   final RxList<Movie> searchResults = <Movie>[].obs;
@@ -44,12 +43,7 @@ class SearchController extends GetxController {
   }
 
   void onMovieTap(Movie movie) {
-    Get.to(
-      () => MovieDetailsView(movie: movie),
-      binding: MovieDetailsBinding(),
-      transition: Transition.fadeIn,
-      duration: const Duration(milliseconds: 300),
-    );
+    Get.toNamed(AppRoutes.movieDetails, arguments: movie);
   }
 
   void clearSearch() {
