@@ -1,8 +1,8 @@
 ### Check List
 
-- [ ] use `.env` to store/hide the API key.
-- [ ] Try to use the app, and find any bugs.
-- [ ] upload to pgyer.com, and share the download link.
+- [x] use `.env` to store/hide the API key.
+- [x] Try to use the app, and find any bugs.
+- [x] upload to pgyer.com, and share the download link.
 
 ### Assignment Scope
 

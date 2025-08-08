@@ -47,11 +47,16 @@ A Flutter application that allows users to explore movies and their cast using d
 
 4. **Configure API key**
 
-   - Open `lib/app/services/api_service.dart`
-   - Replace `YOUR_API_KEY` with your actual API key:
+   - Copy the `.env.example` file to `.env`:
 
-   ```dart
-   static const String _apiKey = 'your_actual_api_key_here';
+   ```bash
+   cp .env.example .env
+   ```
+
+   - Open the `.env` file and replace `your_api_key_here` with your actual API key:
+
+   ```
+   TMDB_API_KEY=your_actual_api_key_here
    ```
 
 5. **Run the app**
