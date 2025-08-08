@@ -11,6 +11,7 @@ alwaysApply: true
 
 # Rules
 
+- Must use English to communicate with the user.
 - Do not use `MediaQuery.of(context).size.width` to get the screen width.
 - Do not chain `.then` for async results; use `async` / `await` instead.
 - Apart from the component's own `build` method, do not create any `Widget _buildXXXX()` methods.
