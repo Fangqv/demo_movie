@@ -18,35 +18,6 @@ class MovieDetailsController extends GetxController {
     initialMovie.value = movie;
     // Load detailed movie information
     loadMovieDetails(movie.id);
-
-    // 监听路由变化
-    ever(Get.routing.current.obs, (String? route) {
-      _onRouteChanged(route);
-    });
-  }
-
-  void _onRouteChanged(String? route) {
-    qr;
-    if (route == null) return;
-
-    // 根据路由执行不同操作
-    switch (route) {
-      case '/home':
-        // 返回首页时的处理
-        break;
-      case '/movie-details':
-        // 进入电影详情页时的处理
-        break;
-      case '/actor-details':
-        // 进入演员详情页时的处理
-        break;
-    }
-  }
-
-  @override
-  void onClose() {
-    // 清理监听器 - 移除这行，因为 String 没有 close 方法
-    super.onClose();
   }
 
   Future<void> loadMovieDetails(int movieId) async {
