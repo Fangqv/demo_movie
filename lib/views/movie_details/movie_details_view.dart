@@ -8,11 +8,12 @@ import 'package:movie/theme/app_theme.dart';
 import 'package:movie/widgets/actor_card.dart';
 
 class MovieDetailsView extends GetView<MovieDetailsController> {
-  const MovieDetailsView({super.key});
+  final Movie movie;
+
+  const MovieDetailsView({super.key, required this.movie});
 
   @override
   String? get tag {
-    final movie = Get.arguments as Movie;
     return "${MovieDetailsController.tagHeader}:${movie.id}";
   }
 
