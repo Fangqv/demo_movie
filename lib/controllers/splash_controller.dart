@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:halo/halo.dart';
 import 'package:movie/routes/app_routes.dart';
@@ -14,7 +15,11 @@ class SplashController extends GetxController {
   }
 
   Future<void> _navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 3));
+    if (kDebugMode) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    } else {
+      await Future.delayed(const Duration(milliseconds: 500));
+    }
     // qr;
     // debugger();
     Get.offAllNamed(AppRoutes.home);
