@@ -13,7 +13,6 @@ lane :all do |params|
     version_number = raw_increase_version_number()
   end
   git_commit(message: version_number.to_s + "(" + build_number.to_s + ")", path: "*")
-  push_to_git_remote()
   build_assets() # 构建 assets
 
   # 🔥 上传到蒲公英
