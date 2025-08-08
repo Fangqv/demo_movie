@@ -15,7 +15,6 @@ dependencies:
 
   # Network & API
   http: ^1.1.0
-  dio: ^5.3.2
 
   # UI & Animation
   cached_network_image: ^3.3.0
