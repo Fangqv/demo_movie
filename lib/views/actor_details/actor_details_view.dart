@@ -10,6 +10,12 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
   const ActorDetailsView({super.key});
 
   @override
+  String? get tag {
+    final actorId = Get.arguments as int;
+    return "${ActorDetailsController.tagHeader}:$actorId";
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,

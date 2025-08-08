@@ -11,6 +11,12 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
   const MovieDetailsView({super.key});
 
   @override
+  String? get tag {
+    final movie = Get.arguments as Movie;
+    return "${MovieDetailsController.tagHeader}:${movie.id}";
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
@@ -258,6 +264,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
 
   Widget _buildCastSection(MovieDetails movie) {
     final cast = movie.cast.take(10).toList();
+    final controller = Get.find<MovieDetailsController>(tag: "movie_details_controller:${movie.id}");
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

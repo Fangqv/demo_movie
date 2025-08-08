@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:movie/controllers/movie_details_controller.dart';
 import 'package:movie/models/actor.dart';
@@ -5,6 +7,8 @@ import 'package:movie/models/movie.dart';
 import 'package:movie/services/api_service.dart';
 
 class ActorDetailsController extends GetxController {
+  static const tagHeader = "actor_details_controller";
+
   final Rx<Actor?> actor = Rx<Actor?>(null);
   final RxList<Movie> movies = <Movie>[].obs;
   final RxBool isLoading = true.obs;
@@ -51,8 +55,6 @@ class ActorDetailsController extends GetxController {
   }
 
   void onMovieTap(Movie movie) {
-    final controller = Get.find<MovieDetailsController>();
-    controller.loadMovieDetails(movie);
     Get.toNamed('/movie-details', arguments: movie);
   }
 }
@@ -60,6 +62,7 @@ class ActorDetailsController extends GetxController {
 class ActorDetailsBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<ActorDetailsController>(() => ActorDetailsController());
+    final arguments = Get.arguments as int;
+    Get.put<ActorDetailsController>(ActorDetailsController(), tag: "${ActorDetailsController.tagHeader}:$arguments");
   }
 }

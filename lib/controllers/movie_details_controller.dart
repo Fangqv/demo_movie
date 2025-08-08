@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
-import 'package:halo/halo.dart';
 import 'package:movie/models/movie.dart';
 import 'package:movie/models/movie_details.dart';
 import 'package:movie/services/api_service.dart';
 
 class MovieDetailsController extends GetxController {
+  static const tagHeader = "movie_details_controller";
+
   final Rx<MovieDetails?> movieDetails = Rx<MovieDetails?>(null);
   final Rx<Movie?> initialMovie = Rx<Movie?>(null);
   final RxBool isLoading = true.obs;
@@ -14,14 +15,10 @@ class MovieDetailsController extends GetxController {
   void onInit() {
     super.onInit();
     final movie = Get.arguments as Movie;
-    // Store initial movie data for immediate display
-
-    // Load detailed movie information
     loadMovieDetails(movie);
   }
 
   Future<void> loadMovieDetails(Movie movie) async {
-    movieDetails.value = null;
     initialMovie.value = movie;
     isLoading.value = true;
     try {
@@ -50,6 +47,7 @@ class MovieDetailsController extends GetxController {
 class MovieDetailsBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<MovieDetailsController>(() => MovieDetailsController());
+    final movie = Get.arguments as Movie;
+    Get.put<MovieDetailsController>(MovieDetailsController(), tag: "${MovieDetailsController.tagHeader}:${movie.id}");
   }
 }
