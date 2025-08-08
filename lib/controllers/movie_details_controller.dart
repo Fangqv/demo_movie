@@ -15,15 +15,17 @@ class MovieDetailsController extends GetxController {
     super.onInit();
     final movie = Get.arguments as Movie;
     // Store initial movie data for immediate display
-    initialMovie.value = movie;
+
     // Load detailed movie information
-    loadMovieDetails(movie.id);
+    loadMovieDetails(movie);
   }
 
-  Future<void> loadMovieDetails(int movieId) async {
+  Future<void> loadMovieDetails(Movie movie) async {
+    movieDetails.value = null;
+    initialMovie.value = movie;
     isLoading.value = true;
     try {
-      final details = await ApiService.getMovieDetails(movieId);
+      final details = await ApiService.getMovieDetails(movie.id);
       movieDetails.value = details;
     } catch (e) {
       Get.snackbar(
@@ -36,8 +38,12 @@ class MovieDetailsController extends GetxController {
     }
   }
 
-  void onActorTap(int actorId) {
-    Get.toNamed('/actor-details', arguments: actorId);
+  void onActorTap(int actorId) async {
+    final currentMovie = initialMovie.value;
+    await Get.toNamed('/actor-details', arguments: actorId);
+    if (currentMovie != null) {
+      loadMovieDetails(currentMovie);
+    }
   }
 }
 

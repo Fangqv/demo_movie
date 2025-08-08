@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:movie/controllers/movie_details_controller.dart';
 import 'package:movie/models/actor.dart';
 import 'package:movie/models/movie.dart';
 import 'package:movie/services/api_service.dart';
@@ -50,6 +51,8 @@ class ActorDetailsController extends GetxController {
   }
 
   void onMovieTap(Movie movie) {
+    final controller = Get.find<MovieDetailsController>();
+    controller.loadMovieDetails(movie);
     Get.toNamed('/movie-details', arguments: movie);
   }
 }
