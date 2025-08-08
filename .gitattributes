@@ -1,0 +1,13 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+*.dart text eol=lf
+
+/**/*.freezed.dart linguist-generated=true
+/**/*.g.dart linguist-generated=true
+/lib/gen/* linguist-generated=true
+
+/**/*.g.dart -diff
+/lib/gen/intl/* -diff
+/lib/gen/l10n.dart -diff
+
+lib/db/db.g.dart diff
