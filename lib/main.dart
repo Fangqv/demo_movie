@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:movie/routes/app_pages.dart';
+import 'package:movie/routes/app_routes.dart';
+import 'package:movie/theme/app_theme.dart';
+import 'package:halo/halo.dart';
 
 void main() {
-  runApp(const MainApp());
+  final _ = WidgetsFlutterBinding.ensureInitialized();
+  HF.init();
+  runApp(const MovieApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MovieApp extends StatelessWidget {
+  const MovieApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(body: Center(child: Text('Hello World!'))),
+    return GetMaterialApp(
+      title: 'Movie App',
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      initialRoute: AppRoutes.splash,
+      getPages: AppPages.routes,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
