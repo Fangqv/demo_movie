@@ -22,7 +22,7 @@
     - [x] Utilize a state management framework (such as GetX, Bloc, or another) to handle application state.
 5.  **UI Components**:
     - [x] Feel free to use any UI component framework.
-    - [ ] Include a splash screen
+    - [x] Include a splash screen
     - [ ] Custom animations, for example "Hero" animation.
 
 ### Additional Notes

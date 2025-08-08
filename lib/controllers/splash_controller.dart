@@ -13,7 +13,7 @@ class SplashController extends GetxController {
     if (kDebugMode) {
       await Future.delayed(const Duration(milliseconds: 100));
     } else {
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 1000));
     }
     Get.offAllNamed(AppRoutes.home);
   }

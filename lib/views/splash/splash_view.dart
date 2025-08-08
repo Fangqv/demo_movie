@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movie/controllers/splash_controller.dart';
@@ -8,7 +9,7 @@ class SplashView extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
-    // qr;
+    final duration = kDebugMode ? Duration(milliseconds: 100) : Duration(milliseconds: 1000);
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: Center(
@@ -17,7 +18,7 @@ class SplashView extends GetView<SplashController> {
           children: [
             // Logo/Title with animation
             TweenAnimationBuilder<double>(
-              duration: const Duration(seconds: 2),
+              duration: duration,
               tween: Tween(begin: 0.0, end: 1.0),
               builder: (context, value, child) {
                 return Transform.scale(
@@ -48,7 +49,7 @@ class SplashView extends GetView<SplashController> {
             const SizedBox(height: 48),
             // Loading indicator
             TweenAnimationBuilder<double>(
-              duration: const Duration(seconds: 1),
+              duration: duration,
               tween: Tween(begin: 0.0, end: 1.0),
               builder: (context, value, child) {
                 return Opacity(
