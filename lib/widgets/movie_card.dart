@@ -24,26 +24,29 @@ class MovieCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Movie Poster
+            // Movie Poster with Hero animation
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: AspectRatio(
                 aspectRatio: 2 / 3,
-                child: CachedNetworkImage(
-                  imageUrl: movie.posterUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    color: AppTheme.surfaceColor,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                child: Hero(
+                  tag: 'movie-poster-${movie.id}',
+                  child: CachedNetworkImage(
+                    imageUrl: movie.posterUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: AppTheme.surfaceColor,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    color: AppTheme.surfaceColor,
-                    child: const Icon(
-                      Icons.movie,
-                      color: AppTheme.textSecondaryColor,
-                      size: 50,
+                    errorWidget: (context, url, error) => Container(
+                      color: AppTheme.surfaceColor,
+                      child: const Icon(
+                        Icons.movie,
+                        color: AppTheme.textSecondaryColor,
+                        size: 50,
+                      ),
                     ),
                   ),
                 ),
@@ -51,27 +54,36 @@ class MovieCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
 
-            // Movie Title
-            Flexible(
-              child: Text(
-                movie.title,
-                style: const TextStyle(
-                  color: AppTheme.textColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+            // Movie Title with Hero animation
+            SizedBox(
+              height: 12, // Fixed height for title area
+              child: Hero(
+                tag: 'movie-title-${movie.id}',
+                child: Material(
+                  color: Colors.transparent,
+                  child: Text(
+                    movie.title,
+                    style: const TextStyle(
+                      color: AppTheme.textColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      height: 1.2, // Adjust line height for better text display
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
               ),
             ),
             const SizedBox(height: 4),
 
             // Release Year and Rating
-            Flexible(
+            SizedBox(
+              height: 16, // Fixed height for rating area
               child: Row(
                 children: [
                   if (movie.releaseYear.isNotEmpty)
-                    Flexible(
+                    Expanded(
                       child: Text(
                         movie.releaseYear,
                         style: const TextStyle(
@@ -87,7 +99,7 @@ class MovieCard extends StatelessWidget {
                       style: TextStyle(color: AppTheme.textSecondaryColor),
                     ),
                   if (movie.voteAverage > 0)
-                    Flexible(
+                    Expanded(
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -97,7 +109,7 @@ class MovieCard extends StatelessWidget {
                             size: 12,
                           ),
                           const SizedBox(width: 2),
-                          Flexible(
+                          Expanded(
                             child: Text(
                               movie.voteAverage.toStringAsFixed(1),
                               style: const TextStyle(

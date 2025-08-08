@@ -5,6 +5,7 @@ import 'package:movie/services/api_service.dart';
 
 class MovieDetailsController extends GetxController {
   final Rx<MovieDetails?> movieDetails = Rx<MovieDetails?>(null);
+  final Rx<Movie?> initialMovie = Rx<Movie?>(null);
   final RxBool isLoading = true.obs;
   final RxBool isLoadingCast = false.obs;
 
@@ -12,6 +13,9 @@ class MovieDetailsController extends GetxController {
   void onInit() {
     super.onInit();
     final movie = Get.arguments as Movie;
+    // Store initial movie data for immediate display
+    initialMovie.value = movie;
+    // Load detailed movie information
     loadMovieDetails(movie.id);
   }
 

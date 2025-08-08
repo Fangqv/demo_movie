@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie/controllers/movie_details_controller.dart';
 import 'package:movie/models/movie_details.dart';
+import 'package:movie/models/movie.dart';
 import 'package:movie/theme/app_theme.dart';
 import 'package:movie/widgets/actor_card.dart';
 
@@ -14,12 +15,16 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: Obx(() {
-        if (controller.isLoading.value) {
+        final movieDetails = controller.movieDetails.value;
+        final initialMovie = controller.initialMovie.value;
+
+        // Show loading only if we don't have initial data
+        if (controller.isLoading.value && initialMovie == null) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final movieDetails = controller.movieDetails.value;
-        if (movieDetails == null) {
+        // Use initial movie data if detailed data is not available
+        if (initialMovie == null) {
           return const Center(
             child: Text(
               'Movie not found',
@@ -40,7 +45,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                   fit: StackFit.expand,
                   children: [
                     CachedNetworkImage(
-                      imageUrl: movieDetails.backdropUrl,
+                      imageUrl: movieDetails?.backdropUrl ?? initialMovie.posterUrl,
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
                         color: AppTheme.surfaceColor,
@@ -70,11 +75,17 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                     ),
                   ],
                 ),
-                title: Text(
-                  movieDetails.title,
-                  style: const TextStyle(
-                    color: AppTheme.textColor,
-                    fontWeight: FontWeight.bold,
+                title: Hero(
+                  tag: 'movie-title-${initialMovie.id}',
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      initialMovie.title,
+                      style: const TextStyle(
+                        color: AppTheme.textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -88,15 +99,17 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Movie Info
-                    _buildMovieInfo(movieDetails),
+                    _buildMovieInfo(initialMovie, movieDetails),
                     const SizedBox(height: 24),
 
                     // Overview
-                    _buildOverview(movieDetails),
-                    const SizedBox(height: 24),
+                    if (movieDetails != null) ...[
+                      _buildOverview(movieDetails),
+                      const SizedBox(height: 24),
+                    ],
 
                     // Cast
-                    _buildCastSection(movieDetails),
+                    if (movieDetails != null) _buildCastSection(movieDetails),
                   ],
                 ),
               ),
@@ -107,25 +120,28 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
     );
   }
 
-  Widget _buildMovieInfo(MovieDetails movie) {
+  Widget _buildMovieInfo(Movie movie, MovieDetails? movieDetails) {
     return Row(
       children: [
-        // Poster
+        // Poster with Hero animation
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: SizedBox(
             width: 120,
             height: 180,
-            child: CachedNetworkImage(
-              imageUrl: movie.posterUrl,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                color: AppTheme.surfaceColor,
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-              errorWidget: (context, url, error) => Container(
-                color: AppTheme.surfaceColor,
-                child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
+            child: Hero(
+              tag: 'movie-poster-${movie.id}',
+              child: CachedNetworkImage(
+                imageUrl: movie.posterUrl,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Container(
+                  color: AppTheme.surfaceColor,
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: AppTheme.surfaceColor,
+                  child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
+                ),
               ),
             ),
           ),
@@ -158,14 +174,14 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                         fontSize: 16,
                       ),
                     ),
-                  if (movie.releaseYear.isNotEmpty && movie.runtime != null)
+                  if (movie.releaseYear.isNotEmpty && movieDetails?.runtime != null)
                     const Text(
                       ' • ',
                       style: TextStyle(color: AppTheme.textSecondaryColor),
                     ),
-                  if (movie.runtime != null)
+                  if (movieDetails?.runtime != null)
                     Text(
-                      '${movie.runtime} min',
+                      '${movieDetails!.runtime} min',
                       style: const TextStyle(
                         color: AppTheme.textSecondaryColor,
                         fontSize: 16,
@@ -188,22 +204,23 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  Text(
-                    ' (${movie.voteCount} votes)',
-                    style: const TextStyle(
-                      color: AppTheme.textSecondaryColor,
-                      fontSize: 14,
+                  if (movieDetails?.voteCount != null)
+                    Text(
+                      ' (${movieDetails!.voteCount} votes)',
+                      style: const TextStyle(
+                        color: AppTheme.textSecondaryColor,
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
                 ],
               ),
               const SizedBox(height: 8),
 
               // Genres
-              if (movie.genres.isNotEmpty)
+              if (movieDetails?.genres != null && movieDetails!.genres.isNotEmpty)
                 Wrap(
                   spacing: 8,
-                  children: movie.genres
+                  children: movieDetails.genres
                       .map(
                         (genre) => Chip(
                           label: Text(genre.name),
