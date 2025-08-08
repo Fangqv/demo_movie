@@ -13,7 +13,7 @@
 
 1.  **Movie Browse**:
     - [x] Display trending and popular movies.
-    - [ ] Implement search functionality to find movies by title.
+    - [x] Implement search functionality to find movies by title.
 2.  **Movie Details**:
     - [x] Show detailed information about a selected movie, including title, overview, release year, runtime, and cast.
 3.  **Actor/Actress Details**:
