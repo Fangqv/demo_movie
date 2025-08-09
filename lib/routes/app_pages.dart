@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:movie/models/actor.dart';
 import 'package:movie/routes/app_routes.dart';
 import 'package:movie/views/splash/splash_view.dart';
 import 'package:movie/views/home/home_view.dart';
@@ -35,8 +36,8 @@ class AppPages {
     GetPage(
       name: AppRoutes.actorDetails,
       page: () {
-        final actorId = Get.arguments as int;
-        return ActorDetailsView(actorId: actorId);
+        final actor = Get.arguments as Actor;
+        return ActorDetailsView(actor: actor);
       },
       binding: ActorDetailsBinding(),
     ),

@@ -18,7 +18,7 @@ class ActorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final heroTag = HeroTagUtils.generateActorProfileTag(actor.id, heroTagSuffix);
+    final heroTag = HeroTagUtils.generateActorProfileTag(actor.id);
 
     return GestureDetector(
       onTap: onTap,

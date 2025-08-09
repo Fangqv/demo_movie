@@ -143,17 +143,22 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
             height: 180,
             child: Hero(
               tag: HeroTagUtils.generateMoviePosterTag(movie.id),
-              child: CachedNetworkImage(
-                imageUrl: movie.posterUrl,
+              child: FadeInImage(
+                placeholder: CachedNetworkImageProvider(movie.posterUrl),
+                image: CachedNetworkImageProvider(movie.posterUrl),
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Container(
-                  color: AppTheme.surfaceColor,
-                  child: const Center(child: CircularProgressIndicator()),
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: AppTheme.surfaceColor,
-                  child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
-                ),
+                placeholderErrorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: AppTheme.surfaceColor,
+                    child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
+                  );
+                },
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: AppTheme.surfaceColor,
+                    child: const Icon(Icons.movie, color: AppTheme.textSecondaryColor),
+                  );
+                },
               ),
             ),
           ),
@@ -310,7 +315,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                 return ActorCard(
                   actor: actor,
                   heroTagSuffix: 'cast_$index',
-                  onTap: () => controller.onActorTap(actor.id),
+                  onTap: () => controller.onActorTap(actor),
                 );
               },
             ),

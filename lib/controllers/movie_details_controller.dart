@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:movie/models/actor.dart';
 import 'package:movie/models/movie.dart';
 import 'package:movie/models/movie_details.dart';
 import 'package:movie/routes/app_routes.dart';
@@ -36,8 +37,8 @@ class MovieDetailsController extends GetxController {
     }
   }
 
-  void onActorTap(int actorId) async {
-    Get.toNamed(AppRoutes.actorDetails, arguments: actorId);
+  void onActorTap(Actor actor) async {
+    Get.toNamed(AppRoutes.actorDetails, arguments: actor);
   }
 }
 

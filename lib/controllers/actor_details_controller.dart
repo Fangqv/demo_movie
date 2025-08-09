@@ -10,19 +10,18 @@ class ActorDetailsController extends GetxController {
 
   final Rx<Actor?> actor = Rx<Actor?>(null);
   final RxList<Movie> movies = <Movie>[].obs;
-  final RxBool isLoading = true.obs;
   final RxBool isLoadingMovies = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    final actorId = Get.arguments as int;
-    loadActorDetails(actorId);
-    loadActorMovies(actorId);
+    final initialActor = Get.arguments as Actor;
+    actor.value = initialActor;
+    loadActorDetails(initialActor.id);
+    loadActorMovies(initialActor.id);
   }
 
   Future<void> loadActorDetails(int actorId) async {
-    isLoading.value = true;
     try {
       final actorDetails = await ApiService.getActorDetails(actorId);
       actor.value = actorDetails;
@@ -32,8 +31,6 @@ class ActorDetailsController extends GetxController {
         'Failed to load actor details: $e',
         snackPosition: SnackPosition.BOTTOM,
       );
-    } finally {
-      isLoading.value = false;
     }
   }
 
@@ -61,7 +58,7 @@ class ActorDetailsController extends GetxController {
 class ActorDetailsBinding extends Bindings {
   @override
   void dependencies() {
-    final arguments = Get.arguments as int;
-    Get.put<ActorDetailsController>(ActorDetailsController(), tag: "${ActorDetailsController.tagHeader}:$arguments");
+    final arguments = Get.arguments as Actor;
+    Get.put<ActorDetailsController>(ActorDetailsController(), tag: "${ActorDetailsController.tagHeader}:${arguments.id}");
   }
 }

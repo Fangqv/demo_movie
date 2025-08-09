@@ -10,13 +10,13 @@ import 'package:movie/widgets/movie_card.dart';
 import 'package:movie/widgets/loading_shimmer.dart';
 
 class ActorDetailsView extends GetView<ActorDetailsController> {
-  final int actorId;
+  final Actor actor;
 
-  const ActorDetailsView({super.key, required this.actorId});
+  const ActorDetailsView({super.key, required this.actor});
 
   @override
   String? get tag {
-    return "${ActorDetailsController.tagHeader}:$actorId";
+    return "${ActorDetailsController.tagHeader}:${actor.id}";
   }
 
   @override
@@ -24,10 +24,6 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: Obx(() {
-        if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
         final actor = controller.actor.value;
         if (actor == null) {
           return Center(
@@ -51,20 +47,30 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
                   children: [
                     Hero(
                       tag: HeroTagUtils.generateActorProfileTag(actor.id),
-                      child: CachedNetworkImage(
-                        imageUrl: actor.fullProfileUrl,
+                      child: FadeInImage(
+                        placeholder: CachedNetworkImageProvider(actor.profileUrl),
+                        image: CachedNetworkImageProvider(actor.fullProfileUrl),
                         fit: BoxFit.cover,
-                        placeholder: (context, url) => Container(
-                          color: AppTheme.surfaceColor,
-                        ),
-                        errorWidget: (context, url, error) => Container(
-                          color: AppTheme.surfaceColor,
-                          child: const Icon(
-                            Icons.person,
-                            color: AppTheme.textSecondaryColor,
-                            size: 100,
-                          ),
-                        ),
+                        placeholderErrorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: AppTheme.surfaceColor,
+                            child: const Icon(
+                              Icons.person,
+                              color: AppTheme.textSecondaryColor,
+                              size: 100,
+                            ),
+                          );
+                        },
+                        imageErrorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: AppTheme.surfaceColor,
+                            child: const Icon(
+                              Icons.person,
+                              color: AppTheme.textSecondaryColor,
+                              size: 100,
+                            ),
+                          );
+                        },
                       ),
                     ),
                     // Gradient overlay
@@ -83,11 +89,17 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
                     ),
                   ],
                 ),
-                title: Text(
-                  actor.name,
-                  style: const TextStyle(
-                    color: AppTheme.textColor,
-                    fontWeight: FontWeight.bold,
+                title: Hero(
+                  tag: HeroTagUtils.generateActorNameTag(actor.id),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      actor.name,
+                      style: const TextStyle(
+                        color: AppTheme.textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -100,6 +112,13 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Personal Information
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: _buildPersonalInfo(context, actor),
+                    ),
+                    const SizedBox(height: 24),
+
                     // Biography
                     if (actor.biography?.isNotEmpty == true) ...[
                       Padding(
@@ -108,13 +127,6 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
                       ),
                       const SizedBox(height: 24),
                     ],
-
-                    // Personal Information
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: _buildPersonalInfo(context, actor),
-                    ),
-                    const SizedBox(height: 24),
 
                     // Known For Movies
                     _buildKnownForSection(context, actor),
@@ -168,7 +180,6 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
         const SizedBox(height: 12),
         if (actor.birthday?.isNotEmpty == true) _buildInfoRow(context, S.of(context).birthDate, actor.birthday!),
         if (actor.placeOfBirth?.isNotEmpty == true) _buildInfoRow(context, S.of(context).placeOfBirth, actor.placeOfBirth!),
-        if (actor.knownForDepartment?.isNotEmpty == true) _buildInfoRow(context, S.of(context).knownFor, actor.knownForDepartment!),
       ],
     );
   }

@@ -30,4 +30,16 @@ class HeroTagUtils {
     }
     return 'actor_profile_$actorId';
   }
+
+  /// Generate a unique Hero tag for actor names
+  ///
+  /// [actorId] - The actor ID
+  /// [suffix] - Optional suffix to make the tag unique
+  /// Returns a unique Hero tag string
+  static String generateActorNameTag(int actorId, [String? suffix]) {
+    if (suffix != null) {
+      return 'actor_name_${actorId}_$suffix';
+    }
+    return 'actor_name_$actorId';
+  }
 }
