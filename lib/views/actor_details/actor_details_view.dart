@@ -46,7 +46,7 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
                   fit: StackFit.expand,
                   children: [
                     Hero(
-                      tag: HeroTagUtils.generateActorProfileTag(actor.id),
+                      tag: HeroTagUtils.generateActorProfileTag(context, actor.id),
                       child: FadeInImage(
                         placeholder: CachedNetworkImageProvider(actor.profileUrl),
                         image: CachedNetworkImageProvider(actor.fullProfileUrl),
@@ -90,7 +90,7 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
                   ],
                 ),
                 title: Hero(
-                  tag: HeroTagUtils.generateActorNameTag(actor.id),
+                  tag: HeroTagUtils.generateActorNameTag(context, actor.id),
                   child: Material(
                     color: Colors.transparent,
                     child: Text(
@@ -266,7 +266,6 @@ class ActorDetailsView extends GetView<ActorDetailsController> {
                   padding: const EdgeInsets.only(right: 16.0),
                   child: MovieCard(
                     movie: movie,
-                    heroTagSuffix: 'known_for_$index',
                     onTap: () => controller.onMovieTap(movie),
                   ),
                 );

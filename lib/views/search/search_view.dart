@@ -5,6 +5,7 @@ import 'package:movie/controllers/search_controller.dart' as search_controller;
 import 'package:movie/models/movie.dart';
 import 'package:movie/theme/app_theme.dart';
 import 'package:movie/gen/l10n.dart';
+import 'package:movie/utils/hero_tag_utils.dart';
 
 class SearchView extends GetView<search_controller.SearchController> {
   const SearchView({super.key});
@@ -140,28 +141,31 @@ class SearchView extends GetView<search_controller.SearchController> {
           child: Row(
             children: [
               // Movie Poster
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: CachedNetworkImage(
-                  imageUrl: movie.posterUrl,
-                  width: 60,
-                  height: 90,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
+              Hero(
+                tag: HeroTagUtils.generateMoviePosterTag(context, movie.id),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: CachedNetworkImage(
+                    imageUrl: movie.posterUrl,
                     width: 60,
                     height: 90,
-                    color: AppTheme.backgroundColor,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      width: 60,
+                      height: 90,
+                      color: AppTheme.backgroundColor,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    width: 60,
-                    height: 90,
-                    color: AppTheme.backgroundColor,
-                    child: const Icon(
-                      Icons.movie,
-                      color: AppTheme.textSecondaryColor,
+                    errorWidget: (context, url, error) => Container(
+                      width: 60,
+                      height: 90,
+                      color: AppTheme.backgroundColor,
+                      child: const Icon(
+                        Icons.movie,
+                        color: AppTheme.textSecondaryColor,
+                      ),
                     ),
                   ),
                 ),

@@ -47,7 +47,12 @@ class HomeView extends GetView<HomeController> {
                     child: _buildSectionHeader(S.of(context).trendingMovies),
                   ),
                   const SizedBox(height: 12),
-                  _buildMoviesList(context, controller.trendingMovies, controller.isLoadingTrending, 'trending'),
+                  _buildMoviesList(
+                    context,
+                    controller.trendingMovies,
+                    controller.isLoadingTrending,
+                    Section.trending,
+                  ),
 
                   const SizedBox(height: 32),
 
@@ -57,7 +62,12 @@ class HomeView extends GetView<HomeController> {
                     child: _buildSectionHeader(S.of(context).popularMovies),
                   ),
                   const SizedBox(height: 12),
-                  _buildMoviesList(context, controller.popularMovies, controller.isLoadingPopular, 'popular'),
+                  _buildMoviesList(
+                    context,
+                    controller.popularMovies,
+                    controller.isLoadingPopular,
+                    Section.popular,
+                  ),
                 ],
               ),
             ),
@@ -82,7 +92,7 @@ class HomeView extends GetView<HomeController> {
     BuildContext context,
     RxList<Movie> movies,
     RxBool isLoading,
-    String sectionType,
+    Section section,
   ) {
     if (isLoading.value) {
       return SizedBox(
@@ -120,8 +130,8 @@ class HomeView extends GetView<HomeController> {
             padding: const EdgeInsets.only(right: 16.0),
             child: MovieCard(
               movie: movie,
-              heroTagSuffix: '${sectionType}_$index',
-              onTap: () => controller.onMovieTap(movie),
+              section: section,
+              onTap: () => controller.onMovieTap(movie, section),
             ),
           );
         },

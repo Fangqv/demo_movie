@@ -54,7 +54,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                   fit: StackFit.expand,
                   children: [
                     Hero(
-                      tag: HeroTagUtils.generateMovieBackdropTag(initialMovie.id),
+                      tag: HeroTagUtils.generateMovieBackdropTag(context, initialMovie.id),
                       child: CachedNetworkImage(
                         imageUrl: movieDetails?.backdropUrl ?? initialMovie.posterUrl,
                         fit: BoxFit.cover,
@@ -143,7 +143,7 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
             width: 120,
             height: 180,
             child: Hero(
-              tag: HeroTagUtils.generateMoviePosterTag(movie.id),
+              tag: HeroTagUtils.generateMoviePosterTag(context, movie.id),
               child: FadeInImage(
                 placeholder: CachedNetworkImageProvider(movie.posterUrl),
                 image: CachedNetworkImageProvider(movie.posterUrl),

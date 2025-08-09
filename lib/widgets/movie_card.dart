@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:movie/controllers/home_controller.dart';
 import 'package:movie/models/movie.dart';
 import 'package:movie/theme/app_theme.dart';
 import 'package:movie/utils/hero_tag_utils.dart';
@@ -7,18 +8,18 @@ import 'package:movie/utils/hero_tag_utils.dart';
 class MovieCard extends StatelessWidget {
   final Movie movie;
   final VoidCallback? onTap;
-  final String? heroTagSuffix;
+  final Section? section;
 
   const MovieCard({
     super.key,
     required this.movie,
     this.onTap,
-    this.heroTagSuffix,
+    this.section,
   });
 
   @override
   Widget build(BuildContext context) {
-    final heroTag = HeroTagUtils.generateMoviePosterTag(movie.id, heroTagSuffix);
+    final heroTag = HeroTagUtils.generateMoviePosterTag(context, movie.id, section);
 
     return GestureDetector(
       onTap: onTap,
