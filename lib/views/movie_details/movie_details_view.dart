@@ -58,8 +58,9 @@ class MovieDetailsView extends GetView<MovieDetailsController> {
                       child: CachedNetworkImage(
                         imageUrl: movieDetails?.backdropUrl ?? initialMovie.posterUrl,
                         fit: BoxFit.cover,
-                        placeholder: (context, url) => Container(
-                          color: AppTheme.surfaceColor,
+                        placeholder: (context, url) => CachedNetworkImage(
+                          imageUrl: initialMovie.posterUrl,
+                          fit: BoxFit.cover,
                         ),
                         errorWidget: (context, url, error) => Container(
                           color: AppTheme.surfaceColor,

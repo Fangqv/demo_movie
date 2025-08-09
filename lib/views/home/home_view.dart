@@ -78,7 +78,12 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  Widget _buildMoviesList(BuildContext context, RxList<Movie> movies, RxBool isLoading, String sectionType) {
+  Widget _buildMoviesList(
+    BuildContext context,
+    RxList<Movie> movies,
+    RxBool isLoading,
+    String sectionType,
+  ) {
     if (isLoading.value) {
       return SizedBox(
         height: 280,
